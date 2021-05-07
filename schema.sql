@@ -22,7 +22,7 @@ CREATE TABLE employee(
     first_name VARCHAR(30) NOT NULL,
     last_name VARCHAR(30) NOT NULL,
     role_id INTEGER(11) INT NOT NULL,
-    manager_id INTEGER(30) INT NOT NULL,
+    manager_id INTEGER(30),
     PRIMARY KEY(id)
 );
 SELECT * FROM department;
