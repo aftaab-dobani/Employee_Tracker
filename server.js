@@ -1,66 +1,79 @@
-const mysql = require('mysql');
-const inquirer = require('inquirer');
+const mysql = require("mysql");
+const inquirer = require("inquirer");
 var consoleTable = require("console.table");
 
 const connection = mysql.createConnection({
-    host: 'localhost',
-  
-    // Your port; if not 3306
-    port: 3306,
-  
-    // Your username
-    user: 'root',
-  
-    // Be sure to update with your own MySQL password!
-    password: 'Ayham0736!',
-    database: 'top_songsDB',
-  });
+  host: "localhost",
 
-  connection.connect((err) => {
-    if (err) throw err;
-    runSearch();
-  });
-  
-  const runSearch = () => {
-    inquirer
-      .prompt({
-        name: 'action',
-        type: 'rawlist',
-        message: 'What would you like to do?',
-        choices: [
-          'Find songs by artist',
-          'Find all artists who appear more than once',
-          'Find data within a specific range',
-          'Search for a specific song',
-          'Find artists with a top song and top album in the same year',
-        ],
-      })
-      .then((answer) => {
-        switch (answer.action) {
-          case 'Find songs by artist':
-            artistSearch();
-            break;
-  
-          case 'Find all artists who appear more than once':
-            multiSearch();
-            break;
-  
-          case 'Find data within a specific range':
-            rangeSearch();
-            break;
-  
-          case 'Search for a specific song':
-            songSearch();
-            break;
-  
-          case 'Find artists with a top song and top album in the same year':
-            songAndAlbumSearch();
-            break;
-  
-          default:
-            console.log(`Invalid action: ${answer.action}`);
-            break;
-        }
-      });
-  };
-  
+  // Your port; if not 3306
+  port: 3306,
+
+  // Your username
+  user: "root",
+
+  // Be sure to update with your own MySQL password!
+  password: "Ayham0736!",
+  database: "top_songsDB",
+});
+
+connection.connect((err) => {
+  if (err) throw err;
+  runSearch();
+});
+
+const viewEmployees = () => {
+  inquirer
+    .prompt({
+      name: "action",
+      type: "list",
+      message: "What would you like to do?",
+      choices: [
+        "View all employees",
+        "View Departments",
+        "View Roles",
+        "Add Employee",
+        "Remove Employee",
+        "Update Employee Role",
+        "Update Employee Department",
+      ],
+    })
+    .then((answer) => {
+      switch (answer.action) {
+        case "View all Employees":
+          viewAllEmployees();
+          break;
+
+        case "View all departments":
+          viewAllDepartments();
+          break;
+
+        case "View all roles":
+          viewAllRoles();
+          break;
+
+        case "Add an employee":
+          viewEmployee();
+          break;
+
+        case "Remove an employee":
+          removeEmployee();
+          break;
+
+        case "Update employee role":
+          updateEmployee();
+          break;
+
+        case "Update employee department":
+          updateEmployeeDepartment();
+          break;
+
+        case "Quit":
+          connection.exit();
+          break;
+
+        default:
+          console.log(`Invalid action: ${answer.action}`);
+          break;
+      }
+    });
+};
