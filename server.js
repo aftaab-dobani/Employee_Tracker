@@ -144,7 +144,23 @@ const viewAllEmpByDep = () => {
         let query = 
         "SELECT employee.first_Name, employee.last_Name, department.department_name, role.title, role.salary FROM employee LEFT JOIN role ON (employee.role.id = role.id) LEFT JOIN department ON (role.department_id = department.id) WHERE (department.department_name =?)";
 
-        connection
-      })
+        connection.query(query, [answer.department], (err, res) => {
+          if (err) throw err;
+          res.forEach(
+            ({ first_Name, last_Name, department_name, title, salary }) => {
+              console.table({
+                first_Name,
+                last_Name,
+                department_name,
+                title,
+                salary,
+              });
+
+            }
+          );
+          start();
+        });
+      });
   })
 }
+
