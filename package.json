@@ -18,8 +18,11 @@
   },
   "homepage": "https://github.com/aftaab-dobani/Employee_Tracker#readme",
   "dependencies": {
+    "console-table": "^0.1.2",
     "console.table": "^0.10.0",
-    "inquirer": "^8.0.0",
-    "mysql": "^2.18.1"
+    "inquirer": "^8.1.0",
+    "mysql": "^2.18.1",
+    "mysql2": "^2.2.5",
+    "nodemon": "^2.0.7"
   }
 }
