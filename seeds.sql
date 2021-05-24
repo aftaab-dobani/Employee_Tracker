@@ -13,4 +13,9 @@ VALUES (1, "Jimmy", "Land", 3, 3),
 (2, "Larry", "Bird", 2, )
 (3, "Alex", "Lane", 3, 1), 
 
+INSERT INTO employee (id, frist_name, last_name, role_id)
+VALUES (4, "Brian", "Jack", 1),
+(5, "Lex", "Kim", 2),
+(6, "Andy", "Nick", 3),
+
 SELECT * FROM employee;

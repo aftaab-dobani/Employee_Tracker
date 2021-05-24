@@ -13,7 +13,7 @@ const connection = mysql.createConnection({
 
   // Be sure to update with your own MySQL password!
   password: "Ayham0736!",
-  database: "top_songsDB",
+  database: "employees_db",
 });
 
 connection.connect((err) => {
@@ -77,3 +77,16 @@ const viewEmployees = () => {
       }
     });
 };
+
+const viewAllEmployees = () => {
+        connection.query(
+          'select a.id, a.first_name, a.last_name, title, department_id, salary, d.concatName from employee_db (err, res) => {
+          res.forEach(({ position, song, year }) => {
+            console.log(
+              `Position: ${position} || Song: ${song} || Year: ${year}`
+            );
+          });
+          runSearch();
+        });
+      });
+  };
