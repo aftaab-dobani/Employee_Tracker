@@ -346,6 +346,65 @@ const viewEmpByManager = () => {
         }
       );
     };
+
+    const updateEmployeeRole = () => {
+      connection.query("SELECT * FROM employee", (err, results) => {
+        if (err) throw err;
+        connection.query("SELECT * FROM role", (err, results2) => {
+          if (err) throw err;
+          inquirer
+            .prompt([
+              {
+                name: "employeeUpdate",
+                type: "rawlist",
+                choices() {
+                  const employeeArray = [];
+                  results.forEach((e) => {
+                    employeeArray.push({
+                      name: e.first_name + " " + e.last_name,
+                      value: e.id,
+                    });
+                  });
+                  return employeeArray;
+                },
+                message: "Which employee would you like to update?",
+              },
+              {
+                name: "newRole",
+                type: "rawlist",
+                choices() {
+                  const roleArray = [];
+                  results2.forEach(({ title, id }) => {
+                    roleArray.push({ name: title, value: id });
+                  });
+                  return roleArray;
+                },
+                message: "What is the employee's new role?",
+              },
+            ])
+            .then((answer) => {
+              connection.query(
+                "UPDATE employee SET ? WHERE ?",
+                [
+                  {
+                    role_id: answer.newRole,
+                  },
+                  {
+                    id: answer.employeeUpdate,
+                  },
+                ],
+                (err, res) => {
+                  if (err) throw err;
+                  console.log(`${res.affectedRows} updated!`);
+                  start();
+                }
+              );
+            });
+        });
+      });
+    };
+  
+  
   
 
 
