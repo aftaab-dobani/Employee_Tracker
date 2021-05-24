@@ -302,6 +302,51 @@ const viewEmpByManager = () => {
               {
                 name: "role",
                 type: "rawlist",
+                choices() {
+                  const roleArray = [];
+                  results.forEach(({ title, id }) => {
+                    roleArray.push({ name: title, value: id });
+                  });
+                  return roleArray;
+                },
+                message: "What is the employee's role?",
+              },
+              {
+                name: "manager",
+                type: "rawlist",
+                choices() {
+                  const managerArray = [];
+                  results.forEach((e) => {
+                    managerArray.push({
+                      name: e.first_name + " " + e.last_name,
+                      value: e.id,
+                    });
+                  });
+                  return managerArray;
+                },
+                message: "Whats the name of the employee's manager?",
+              },
+            ])
+            .then((answer) => {
+              connection.query(
+                "INSERT INTO employee SET ?",
+                {
+                  first_name: answer.firstName,
+                  last_name: answer.lastName,
+                  role_id: answer.role,
+                  manager_id: answer.manager,
+                },
+                (err) => {
+                  if (err) throw err;
+                  console.log("Your employee was added!");
+                  start();
+                }
+              );
+            });
+        }
+      );
+    };
+  
 
 
    
