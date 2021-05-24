@@ -32,27 +32,27 @@ function init() {
         "View all employees",
         "View all employees by department",
         "View all employees by manager",
-        "View Departments",
-        "View Roles",
-        "Add Employee",
-        "Remove Employee",
-        "Update Employee Role",
-        "Update Employee Department",
+        "View all departments",
+        "View all roles",
+        "Add an employee",
+        "Remove an employee",
+        "Update employee role",
+        "Update employee department",
       ],
      
     },
     ])
       .then((answer) => {
       switch (answer.action) {
-        case "View all Employees":
+        case "View all employees":
           viewAllEmployees();
           break;
 
-        case "View All Employees By Department": 
+        case "View all employees by department": 
           viewAllEmpByDep();
           break;
 
-          case "View All Employees By Manager": 
+          case "View all employees by manager": 
           viewAllEmpByMan();
           break;
 
@@ -98,7 +98,7 @@ const viewAllRoles = () => {
   connection.query("SELECT * FROM role", (err, results) => {
     if (err) throw err;
     console.table(results);
-    start();
+    init();
   });
 };
 
@@ -107,7 +107,7 @@ const viewAllEmployees = () => {
   connection.query("SELECT * FROM role", (err, results) => {
     if (err) throw err;
     console.table(results);
-    start();
+    init();
   });
 };
 
@@ -116,100 +116,11 @@ const viewAllDepartments = () => {
   connection.query("SELECT * FROM role", (err, results) => {
     if (err) throw err;
     console.table(results);
-    start();
+    init();
   });
 };
 
-const viewAllEmpByDep = () => {
-  connection.query("SELECT department_name FROM department", 
-  (err, results) => {
-    if (err) throw err;
-
-    inquirer
-      .prompt([
-        {
-          name: "departments",
-          type: "rawlist",
-          choices() {
-            let departmentArray = [];
-            results.forEach(({ department_name }) => {
-              departmentArray.push(department_name);
-            });
-              return departmentArray;
-          },
-          message: "Choose a department",
-        },
-      ])
-      .then((answer) => {
-        let query = 
-        "SELECT employee.first_Name, employee.last_Name, department.department_name, role.title, role.salary FROM employee LEFT JOIN role ON (employee.role.id = role.id) LEFT JOIN department ON (role.department_id = department.id) WHERE (department.department_name =?)";
-
-        connection.query(query, [answer.department], (err, res) => {
-          if (err) throw err;
-          res.forEach(
-            ({ first_Name, last_Name, department_name, title, salary }) => {
-              console.table({
-                first_Name,
-                last_Name,
-                department_name,
-                title,
-                salary,
-              });
-
-            }
-          );
-          start();
-        });
-      });
-  })
-}
-
-const viewEmpByManager = () => {
-  connection.query(
-    "SELECT id, first_name, last_name, manager_id FROM employee",
-    (err, results) => {
-      if (err) throw err;
-      inquirer
-          .prompt([
-            {
-              name: "manager",
-              type: "rawlist",
-              choices() {
-                const managerArray = [];
-                results.forEach((e) => {
-                  managerArray.push({
-                    name: e.first_name + " " + e.last_name,
-                    value: e.id,
-                  });
-                });
-                return managerArray;
-              },
-              message: "Choose a Manager",
-            },
-          ])
-          .then((answer) => {
-            let manager = answer.manager;
-            console.log(manager);
-            let query =
-              "SELECT first_Name, last_Name FROM employee WHERE manager_id = ?";
-
-            connection.query(query, [answer.manager], (err, res) => {
-              if (err) throw err;
-              if (res.length != 0) {
-                res.forEach(({ first_Name, last_Name }) => {
-                  console.log(`Employee: ${first_Name} ${last_Name} `);
-                });
-              } else {
-                console.table("Not a manager");
-              }
-              start();
-            });
-          });
-      }
-    );
-  };
-
-  
+// ---------------- Add --------------------
   const addRole = () => {
     connection.query("SELECT * FROM department", (err, results) => {
       if (err) throw err;
@@ -250,7 +161,7 @@ const viewEmpByManager = () => {
             (err) => {
               if (err) throw err;
               console.table("Role was added!");
-              start();
+              init();
             }
             );
           });
@@ -275,7 +186,7 @@ const viewEmpByManager = () => {
             (err) => {
               if (err) throw err;
               console.log("Your department was added!");
-              start();
+              init();
             }
           );
         });
@@ -339,7 +250,7 @@ const viewEmpByManager = () => {
                 (err) => {
                   if (err) throw err;
                   console.log("Your employee was added!");
-                  start();
+                  init();
                 }
               );
             });
@@ -396,7 +307,7 @@ const viewEmpByManager = () => {
                 (err, res) => {
                   if (err) throw err;
                   console.log(`${res.affectedRows} updated!`);
-                  start();
+                  init();
                 }
               );
             });
