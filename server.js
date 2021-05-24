@@ -239,3 +239,23 @@ const viewEmpByManager = () => {
             message: "Choose a department",
           },
         ])
+        .then((answer) => {
+          connection.query(
+            "INSERT INTO role SET ?",
+            {
+              title: answer.newRole,
+              salary: parseInt(answer.salary),
+              department_id: answer.department,
+            },
+            (err) => {
+              if (err) throw err;
+              console.table("Role was added!");
+              start();
+            }
+            );
+          });
+      });
+    };
+
+    
+
