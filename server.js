@@ -21,9 +21,10 @@ connection.connect((err) => {
   runSearch();
 });
 
-const viewEmployees = () => {
+function init() {
   inquirer
-    .prompt({
+    .prompt([
+      {
       name: "action",
       type: "list",
       message: "What would you like to do?",
@@ -36,8 +37,10 @@ const viewEmployees = () => {
         "Update Employee Role",
         "Update Employee Department",
       ],
-    })
-    .then((answer) => {
+     
+    },
+    ])
+      .then((answer) => {
       switch (answer.action) {
         case "View all Employees":
           viewAllEmployees();
@@ -78,15 +81,13 @@ const viewEmployees = () => {
     });
 };
 
-const viewAllEmployees = () => {
-        connection.query(
-          'select a.id, a.first_name, a.last_name, title, department_id, salary, d.concatName from employee_db (err, res) => {
-          res.forEach(({ position, song, year }) => {
-            console.log(
-              `Position: ${position} || Song: ${song} || Year: ${year}`
-            );
-          });
-          runSearch();
-        });
-      });
-  };
+// ------------------- VIEW -------------------
+
+// View All Roles
+const viewAllRoles = () => { 
+  connection.query("SELECT * FROM role", (err, results) => {
+    if (err) throw err;
+    console.table(results);
+    start();
+  });
+};
