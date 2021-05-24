@@ -30,6 +30,8 @@ function init() {
       message: "What would you like to do?",
       choices: [
         "View all employees",
+        "View all employees by department",
+        "View all employees by manager",
         "View Departments",
         "View Roles",
         "Add Employee",
@@ -44,6 +46,14 @@ function init() {
       switch (answer.action) {
         case "View all Employees":
           viewAllEmployees();
+          break;
+
+        case "View All Employees By Department": 
+          viewAllEmpByDep();
+          break;
+
+          case "View All Employees By Manager": 
+          viewAllEmpByMan();
           break;
 
         case "View all departments":
@@ -110,3 +120,31 @@ const viewAllDepartments = () => {
   });
 };
 
+const viewAllEmpByDep = () => {
+  connection.query("SELECT department_name FROM department", 
+  (err, results) => {
+    if (err) throw err;
+
+    inquirer
+      .prompt([
+        {
+          name: "departments",
+          type: "rawlist",
+          choices() {
+            let departmentArray = [];
+            results.forEach(({ department_name }) => {
+              departmentArray.push(department_name);
+            });
+              return departmentArray;
+          },
+          message: "Choose a department",
+        },
+      ])
+      .then((answer) => {
+        let query = 
+        "SELECT employee.first_Name, employee.last_Name, department.department_name, role.title, role.salary FROM employee LEFT JOIN role ON (employee.role.id = role.id) LEFT JOIN department ON (role.department_id = department.id) WHERE (department.department_name =?)";
+
+        connection
+      })
+  })
+}
