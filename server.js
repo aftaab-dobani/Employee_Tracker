@@ -164,3 +164,78 @@ const viewAllEmpByDep = () => {
   })
 }
 
+const viewEmpByManager = () => {
+  connection.query(
+    "SELECT id, first_name, last_name, manager_id FROM employee",
+    (err, results) => {
+      if (err) throw err;
+      inquirer
+          .prompt([
+            {
+              name: "manager",
+              type: "rawlist",
+              choices() {
+                const managerArray = [];
+                results.forEach((e) => {
+                  managerArray.push({
+                    name: e.first_name + " " + e.last_name,
+                    value: e.id,
+                  });
+                });
+                return managerArray;
+              },
+              message: "Choose a Manager",
+            },
+          ])
+          .then((answer) => {
+            let manager = answer.manager;
+            console.log(manager);
+            let query =
+              "SELECT first_Name, last_Name FROM employee WHERE manager_id = ?";
+
+            connection.query(query, [answer.manager], (err, res) => {
+              if (err) throw err;
+              if (res.length != 0) {
+                res.forEach(({ first_Name, last_Name }) => {
+                  console.log(`Employee: ${first_Name} ${last_Name} `);
+                });
+              } else {
+                console.table("Not a manager");
+              }
+              start();
+            });
+          });
+      }
+    );
+  };
+
+  
+  const addRole = () => {
+    connection.query("SELECT * FROM department", (err, results) => {
+      if (err) throw err;
+
+      inquirer
+        .prompt([
+          {
+            type: "input",
+            name: "newRole",
+            message: "What is the name of the role?",
+          },
+          {
+            type: "input",
+            name: "salary",
+            message: "What is the salary of the new role?",
+          },
+          {
+            name: "department",
+            type: "rawlist",
+            choices() {
+              let departmentArray = [];
+              results.forEach(({ department_name, id }) => {
+                departmentArray.push({ name: department_name, value: id });
+              });
+              return departmentArray;
+            },
+            message: "Choose a department",
+          },
+        ])
