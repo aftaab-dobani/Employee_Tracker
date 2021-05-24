@@ -93,7 +93,7 @@ function init() {
 
 // ------------------- VIEW -------------------
 
-// View All Roles
+
 const viewAllRoles = () => { 
   connection.query("SELECT * FROM role", (err, results) => {
     if (err) throw err;
@@ -102,7 +102,7 @@ const viewAllRoles = () => {
   });
 };
 
-// View All Employees 
+ 
 const viewAllEmployees = () => { 
   connection.query("SELECT * FROM role", (err, results) => {
     if (err) throw err;
@@ -111,7 +111,7 @@ const viewAllEmployees = () => {
   });
 };
 
-// View All Departments 
+ 
 const viewAllDepartments = () => { 
   connection.query("SELECT * FROM role", (err, results) => {
     if (err) throw err;
