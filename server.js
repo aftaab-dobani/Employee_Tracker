@@ -257,5 +257,53 @@ const viewEmpByManager = () => {
       });
     };
 
-    
+    const addDepartment = () => {
+      inquirer
+      .prompt([
+        {
+          type: "input",
+          name: "newDept",
+          message: "What department would you like to add?",
+        },
+      ])
+        .then((answer) => {
+          connection.query(
+            "INSERT INTO department SET ?",
+            {
+              department_name: answer.newDepartment,
+            },
+            (err) => {
+              if (err) throw err;
+              console.log("Your department was added!");
+              start();
+            }
+          );
+        });
+  
+    };
+
+    const addEmployee = () => {
+      connection.query(
+        "SELECT * FROM employee LEFT JOIN role ON (employee.role_id = role.id) LEFT JOIN department ON (role.department_id = department.id)",
+        (err, results) => {
+          if (err) throw err;
+          inquirer
+            .prompt([
+              {
+                type: "input",
+                name: "firstName",
+                message: "What is the employee's first name?",
+              },
+              {
+                type: "input",
+                name: "lastName",
+                message: "What is the employee's last name?",
+              },
+              {
+                name: "role",
+                type: "rawlist",
+
+
+   
+
 
